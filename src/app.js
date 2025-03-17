@@ -40,8 +40,6 @@ function move() {
     const fileName = path.basename(file);
 
     targetPath = path.join(destination, fileName);
-  } else if (destination.endsWith('/')) {
-    fs.mkdirSync(destination, { recursive: true });
   }
 
   fs.rename(file, targetPath, (err) => {
