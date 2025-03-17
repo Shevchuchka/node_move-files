@@ -26,6 +26,10 @@ function move() {
   const destExists = fs.existsSync(destination);
   let isDestDirectory = false;
 
+  if (!destExists && destination[destination.length - 1] === '/') {
+    console.error('Error: the destination file does not exist');
+  }
+
   if (destExists) {
     isDestDirectory = fs.statSync(destination).isDirectory();
   }
@@ -36,12 +40,18 @@ function move() {
     const fileName = path.basename(file);
 
     targetPath = path.join(destination, fileName);
+  } else if (destination.endsWith('/')) {
+    fs.mkdirSync(destination, { recursive: true });
   }
 
   fs.rename(file, targetPath, (err) => {
     if (err) {
       console.error('Error moving file:', err);
+
+      return;
     }
+
+    console.log(`File moved to ${targetPath}`);
   });
 }
 
